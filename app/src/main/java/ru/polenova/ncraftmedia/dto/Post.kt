@@ -5,7 +5,8 @@ class Post(
     val author: String,
     val content: String,
     val created: String,
-    var countLike: Int = 0,
+    val location: Pair<Double, Double>,
+    var likeByMe: Boolean = true,
     var countComment: Int = 0,
     var countShare: Int = 0
 )
