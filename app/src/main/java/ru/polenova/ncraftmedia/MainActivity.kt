@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.polenova.ncraftmedia.dto.Post
 
@@ -26,11 +27,13 @@ class MainActivity : AppCompatActivity() {
         val lng = post.location.second
         imageViewLike.setOnClickListener {
             post.likeByMe = !post.likeByMe
-            imageViewLike.setImageResource(
-                if (post.likeByMe) R.drawable.ic_favorite_red_24dp
-                else R.drawable.ic_favorite_grey_24dp
-            )
-            textViewLike.text = if (post.likeByMe) "1" else ""
+            if (post.likeByMe) {
+                imageViewLike.setImageResource(R.drawable.ic_favorite_red_24dp)
+                textViewLike.text = "${++post.countComment}"
+            } else {
+                textViewLike.text = "${--post.countComment}"
+            }
+            showCount()
         }
         imageViewComment.setOnClickListener {
             imageViewComment.setImageResource(R.drawable.ic_mode_comment_black_24dp)
@@ -50,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             }
             startActivity(intent)
             imageViewShare.setImageResource(R.drawable.ic_share_black_24dp)
-            textViewShare.text = "${++post.countShare}"
+            //textViewShare.text = "${++post.countShare}"
         }
         imageViewLocation.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -59,6 +62,15 @@ class MainActivity : AppCompatActivity() {
             if (intent.resolveActivity(packageManager) != null) {
                 startActivity(intent)
             }
+        }
+    }
+
+    private fun showCount() {
+        if (textViewLike.text == "0") {
+            imageViewLike.setImageResource(R.drawable.ic_favorite_grey_24dp)
+            textViewLike.visibility = View.INVISIBLE
+        } else {
+            textViewLike.visibility = View.VISIBLE
         }
     }
 }
