@@ -1,76 +1,38 @@
 package ru.polenova.ncraftmedia
 
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import ru.polenova.ncraftmedia.Adapter.PostAdapter
 import ru.polenova.ncraftmedia.dto.Post
+import ru.polenova.ncraftmedia.dto.TypePost
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val post = Post(
+
+        val post0 = Post(
             123,
             "Vasya Pupkov",
             "First post in our network! Hello Kotlin world!",
             "20 march 2020",
             Pair(55.75222, 37.61556)
         )
-        textViewName.text = post.author
-        textViewPost.text = post.content
-        textViewDate.text = post.created
-        val lat = post.location.first
-        val lng = post.location.second
-        imageViewLike.setOnClickListener {
-            post.likeByMe = !post.likeByMe
-            if (post.likeByMe) {
-                imageViewLike.setImageResource(R.drawable.ic_favorite_red_24dp)
-                textViewLike.text = "${++post.countComment}"
-            } else {
-                textViewLike.text = "${--post.countComment}"
-            }
-            showCount()
-        }
-        imageViewComment.setOnClickListener {
-            imageViewComment.setImageResource(R.drawable.ic_mode_comment_black_24dp)
-            textViewComment.text = "${++post.countComment}"
-        }
-        imageViewShare.setOnClickListener {
 
-            val intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(
-                    Intent.EXTRA_TEXT, """ 
-                    ${post.author} (${post.created})
-                    ${post.content} 
-                    """.trimIndent()
-                )
-                type = "text/plain"
-            }
-            startActivity(intent)
-            imageViewShare.setImageResource(R.drawable.ic_share_black_24dp)
-            //textViewShare.text = "${++post.countShare}"
-        }
-        imageViewLocation.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("geo:$lat,$lng")
-            }
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            }
-        }
-    }
+        val list = listOf(
+            Post(5, "Petya", "good bye", "4.04.2020", Pair(0.0, 0.0), TypePost.REPOST, post0),
+            Post(4, "Petya", "lll", "4.04.2020", Pair(55.75222, 37.61556), TypePost.REPLY, post0),
+            Post(3, "Petya", "gggggg", "3.04.2020", Pair(55.75222, 37.61556),  TypePost.POST, null),
+            Post(2, "Petya", "...", "2.04.2020", Pair(55.75222, 37.61556), TypePost.POST, null),
+            Post(1, "Petya", "hello", "1.04.2020", Pair(55.75222, 37.61556), TypePost.POST, null)
+        )
 
-    private fun showCount() {
-        if (textViewLike.text == "0") {
-            imageViewLike.setImageResource(R.drawable.ic_favorite_grey_24dp)
-            textViewLike.visibility = View.INVISIBLE
-        } else {
-            textViewLike.visibility = View.VISIBLE
+        with(content) {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = PostAdapter(list)
         }
     }
 }
