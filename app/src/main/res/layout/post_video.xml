@@ -15,36 +15,22 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/textViewPost"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewIcon"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="#000000"
-        android:textSize="18sp" />
-
-    <TextView
         android:id="@+id/textViewDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:maxLines="1"
         android:textColor="#999999"
         android:textSize="10sp"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewLocation"
-        app:layout_constraintStart_toEndOf="@+id/imageViewIcon"
-        app:layout_constraintTop_toTopOf="@+id/imageViewIcon" />
+        app:layout_constraintBottom_toTopOf="@+id/textViewName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageViewLike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textViewLike"
@@ -101,58 +87,24 @@
         android:layout_height="wrap_content"
         android:textColor="#eeeeee"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewShare"
-        app:layout_constraintEnd_toEndOf="@+id/textViewAnother"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageViewShare"
         app:layout_constraintVertical_bias="0.6" />
 
-    <ImageView
-        android:id="@+id/imageViewIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageRemove"
-        app:srcCompat="@drawable/ic_icons8_android_os" />
-
     <TextView
         android:id="@+id/textViewName"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewIcon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewIcon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="32dp"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:textColor="#000000" />
-
-    <ImageView
-        android:id="@+id/imageViewLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewDate"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewDate"
-        app:srcCompat="@drawable/ic_location_on_black_24dp" />
-
-    <TextView
-        android:id="@+id/textViewAnother"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewLike"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.437"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPost" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageViewReply"
@@ -160,8 +112,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewRepost"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAnother"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton"
         app:srcCompat="@drawable/ic_reply_24dp" />
 
     <ImageView
@@ -169,12 +123,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewReply"
-        app:layout_constraintStart_toStartOf="@+id/textViewAnother"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageViewReply"
         app:srcCompat="@drawable/ic_repeat_24dp" />
 
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewLike"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewName"
+        app:srcCompat="@mipmap/ic_launcher_foreground" />
+
     <ImageView
-        android:id="@+id/imageRemove"
+        android:id="@+id/ivRemove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
