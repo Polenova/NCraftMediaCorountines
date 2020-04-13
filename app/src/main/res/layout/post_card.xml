@@ -16,16 +16,14 @@
 
     <TextView
         android:id="@+id/textViewPost"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewIcon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:textColor="#000000"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewIcon" />
 
     <TextView
         android:id="@+id/textViewDate"
@@ -36,7 +34,7 @@
         android:maxLines="1"
         android:textColor="#999999"
         android:textSize="10sp"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewLocation"
+        app:layout_constraintEnd_toStartOf="@+id/imageRemove"
         app:layout_constraintStart_toEndOf="@+id/imageViewIcon"
         app:layout_constraintTop_toTopOf="@+id/imageViewIcon" />
 
@@ -44,20 +42,20 @@
         android:id="@+id/imageViewLike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="32dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textViewLike"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewComment"
         app:srcCompat="@drawable/ic_favorite_grey_24dp" />
 
     <TextView
         android:id="@+id/textViewLike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
         android:textColor="#eeeeee"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewLike"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewComment"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLike"
         app:layout_constraintTop_toTopOf="@+id/imageViewLike"
         app:layout_constraintVertical_bias="0.6" />
 
@@ -65,10 +63,10 @@
         android:id="@+id/imageViewComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="32dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewLike"
-        app:layout_constraintEnd_toStartOf="@+id/textViewComment"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewShare"
         app:layout_constraintTop_toTopOf="@+id/imageViewLike"
         app:srcCompat="@drawable/ic_mode_comment_grey_24dp" />
 
@@ -76,10 +74,10 @@
         android:id="@+id/textViewComment"
         android:layout_width="0dp"
         android:layout_height="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
         android:textColor="#eeeeee"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewComment"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewShare"
+        app:layout_constraintStart_toEndOf="@+id/imageViewComment"
         app:layout_constraintTop_toTopOf="@+id/imageViewComment"
         app:layout_constraintVertical_bias="0.6" />
 
@@ -87,10 +85,10 @@
         android:id="@+id/imageViewShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="32dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewComment"
-        app:layout_constraintEnd_toStartOf="@+id/textViewShare"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageViewComment"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_share_grey_24dp" />
@@ -99,9 +97,10 @@
         android:id="@+id/textViewShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:textColor="#eeeeee"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewShare"
-        app:layout_constraintEnd_toEndOf="@+id/textViewAnother"
+        app:layout_constraintStart_toEndOf="@+id/imageViewShare"
         app:layout_constraintTop_toTopOf="@+id/imageViewShare"
         app:layout_constraintVertical_bias="0.6" />
 
@@ -109,17 +108,12 @@
         android:id="@+id/imageViewIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageRemove"
+        app:layout_constraintTop_toTopOf="@+id/imageRemove"
         app:srcCompat="@drawable/ic_icons8_android_os" />
 
     <TextView
         android:id="@+id/textViewName"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewIcon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewIcon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -128,25 +122,25 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewIcon"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewLocation"
+        app:layout_constraintStart_toEndOf="@+id/imageViewIcon" />
 
     <ImageView
         android:id="@+id/imageViewLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewDate"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewDate"
+        app:layout_constraintTop_toTopOf="@+id/textViewName"
         app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
     <TextView
         android:id="@+id/textViewAnother"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/imageViewLike"
@@ -159,9 +153,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewRepost"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAnother"
         app:srcCompat="@drawable/ic_reply_24dp" />
 
     <ImageView
@@ -169,7 +162,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewReply"
-        app:layout_constraintStart_toStartOf="@+id/textViewAnother"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageViewReply"
         app:srcCompat="@drawable/ic_repeat_24dp" />
 
@@ -181,5 +174,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_keyboard_arrow_down_24dp" />
+
+    <ImageView
+        android:id="@+id/imageViewCom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:scaleType="fitStart"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewLike"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.218"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPost"
+        app:layout_constraintVertical_bias="1.0"
+        tools:srcCompat="@mipmap/lifestyle_00535" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

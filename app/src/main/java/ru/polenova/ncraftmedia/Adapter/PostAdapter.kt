@@ -41,12 +41,12 @@ class PostAdapter(val list: List<Post>) : RecyclerView.Adapter<RecyclerView.View
             TypePost.VIDEO -> VideoViewHolder(
                 this,
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.post_video, parent, false)
+                    .inflate(R.layout.post_card, parent, false)
             )
             TypePost.COMMERCIAL -> CommercialViewHolder(
                 this,
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.post_commercial, parent, false)
+                    .inflate(R.layout.post_card, parent, false)
             )
         }
 
