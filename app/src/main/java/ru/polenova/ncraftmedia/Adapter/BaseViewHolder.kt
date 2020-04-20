@@ -3,8 +3,7 @@ package ru.polenova.ncraftmedia.Adapter
 import android.content.Intent
 import android.net.Uri
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.view.View.*
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.post_card.view.*
 import kotlinx.android.synthetic.main.post_card.view.imageViewCom
@@ -17,7 +16,7 @@ import kotlinx.android.synthetic.main.post_card.view.textViewName
 import ru.polenova.ncraftmedia.R
 import ru.polenova.ncraftmedia.dto.Post
 
-open class BaseViewHolder(val adapter: PostAdapter, view: View) :
+open class BaseViewHolder(val adapter: PostAdapter, view: View, var list: MutableList<Post>) :
     RecyclerView.ViewHolder(view) {
 
     init {
@@ -53,13 +52,13 @@ open class BaseViewHolder(val adapter: PostAdapter, view: View) :
                         type = "text/plain"
                     }
                     itemView.context.startActivity(intent)
-                    //imageViewShare.setImageResource(R.drawable.ic_share_black_24dp)
+                    ++item.countShare
                 }
+                adapter.notifyDataSetChanged()
             }
             imageViewComment.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     val item = adapter.list[adapterPosition]
-                    imageViewComment.setImageResource(R.drawable.ic_mode_comment_black_24dp)
                     ++item.countComment
                 }
                 adapter.notifyItemChanged(adapterPosition)
@@ -82,6 +81,13 @@ open class BaseViewHolder(val adapter: PostAdapter, view: View) :
                         data = Uri.parse(item.sourceHTTP)
                     }
                     itemView.context.startActivity(intent)
+                }
+            }
+            imageRemove.setOnClickListener {
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    val item = adapter.list[adapterPosition]
+                    list.removeAt(adapterPosition)
+                    adapter.notifyDataSetChanged()
                 }
             }
         }
@@ -109,6 +115,10 @@ open class BaseViewHolder(val adapter: PostAdapter, view: View) :
             if (post.countComment != 0) {
                 imageViewComment.setImageResource(R.drawable.ic_mode_comment_black_24dp)
                 textViewComment.text = "${post.countComment}"
+            }
+            if (post.countShare != 0) {
+                imageViewShare.setImageResource(R.drawable.ic_share_black_24dp)
+                textViewShare.text = "${post.countShare}"
             }
         }
     }

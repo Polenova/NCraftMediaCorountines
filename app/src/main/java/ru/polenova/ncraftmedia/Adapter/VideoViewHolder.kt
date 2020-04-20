@@ -5,7 +5,7 @@ import kotlinx.android.synthetic.main.post_card.view.imageViewCom
 import ru.polenova.ncraftmedia.R
 import ru.polenova.ncraftmedia.dto.Post
 
-class VideoViewHolder(adapter: PostAdapter, view: View) : BaseViewHolder(adapter, view) {
+class VideoViewHolder(adapter: PostAdapter, view: View,  list: MutableList<Post>) : BaseViewHolder(adapter, view, list) {
 
     override fun bind(post: Post) {
         super.bind(post)

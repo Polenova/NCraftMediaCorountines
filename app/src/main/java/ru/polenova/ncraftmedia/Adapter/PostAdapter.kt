@@ -22,33 +22,19 @@ fun viewTypeToPostType(viewType: Int) = when (viewType) {
     else -> TODO("unknown view type")
 }
 
-class PostAdapter(val list: List<Post>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        when (viewTypeToPostType(viewType)) {
-            TypePost.POST -> PostViewHolder(
-                this,
-                LayoutInflater.from(parent.context).inflate(R.layout.post_card, parent, false)
-            )
-            TypePost.REPLY -> ReplyViewHolder(
-                this,
-                LayoutInflater.from(parent.context).inflate(R.layout.post_card, parent, false)
-            )
-            TypePost.REPOST -> RepostViewHolder(
-                this,
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.post_card, parent, false)
-            )
-            TypePost.VIDEO -> VideoViewHolder(
-                this,
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.post_card, parent, false)
-            )
-            TypePost.COMMERCIAL -> CommercialViewHolder(
-                this,
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.post_card, parent, false)
-            )
+class PostAdapter(val list: MutableList<Post>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val postCard =
+            LayoutInflater.from(parent.context).inflate(R.layout.post_card, parent, false)
+        return when (viewTypeToPostType(viewType)) {
+            TypePost.REPLY -> ReplyViewHolder(this, postCard, list)
+            TypePost.REPOST -> RepostViewHolder(this, postCard, list)
+            TypePost.VIDEO -> VideoViewHolder(this, postCard, list)
+            TypePost.COMMERCIAL -> CommercialViewHolder(this, postCard, list)
+            else -> PostViewHolder(this, postCard, list)
         }
+    }
 
     override fun getItemCount() = list.size
 
