@@ -1,4 +1,4 @@
-package ru.polenova.ncraftmedia.Adapter
+package ru.polenova.ncraftmedia.adapter
 
 import android.content.Intent
 import android.net.Uri

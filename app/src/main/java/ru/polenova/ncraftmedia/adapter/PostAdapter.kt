@@ -1,4 +1,4 @@
-package ru.polenova.ncraftmedia.Adapter
+package ru.polenova.ncraftmedia.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

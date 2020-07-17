@@ -1,43 +1,84 @@
 package ru.polenova.ncraftmedia
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View.GONE
-import androidx.recyclerview.widget.LinearLayoutManager
-import io.ktor.client.request.get
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
-import ru.polenova.ncraftmedia.Adapter.PostAdapter
-import ru.polenova.ncraftmedia.dto.Post
-import kotlin.coroutines.CoroutineContext
+import ru.polenova.ncraftmedia.api.Token
+import ru.polenova.ncraftmedia.FeedActivity as FeedActivity
 
-class MainActivity : AppCompatActivity(), CoroutineScope {
-    private val job = SupervisorJob()
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+class MainActivity : AppCompatActivity() {
 
-    @io.ktor.util.KtorExperimentalAPI
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        launch {
-            val list = withContext(Dispatchers.IO) {
-                Api.client.get<MutableList<Post>>(Api.url)
+        startActivityIfAuthorized()
+
+        btn_login.setOnClickListener {
+            val login = edt_login.text.toString()
+            val password = edt_password.text.toString()
+            if (login.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, R.string.empty, Toast.LENGTH_SHORT).show()
+            } else {
+                lifecycleScope.launch {
+                    switchDeterminateBar(true)
+                    val response = Repository.authenticate(login, password)
+                    if (response.isSuccessful) {
+                        val token: Token? = response.body()
+                        savedToken(token, this@MainActivity)
+                        Toast.makeText(
+                            this@MainActivity,
+                            R.string.authorization_completed,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        startActivityIfAuthorized()
+                    } else {
+                        Toast.makeText(
+                            this@MainActivity,
+                            R.string.authorization_failed,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    switchDeterminateBar(false)
+                }
             }
-            with(content) {
-                layoutManager = LinearLayoutManager(this@MainActivity)
-                adapter = PostAdapter(list)
-            }
-            progressBar.visibility = GONE
         }
-
-//        client.close()
+        btn_registration.setOnClickListener {
+            val intent = Intent(this, RegistrationActivity::class.java)
+            startActivity(intent)
+        }
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        cancel()
+    override fun onStart() {
+        super.onStart()
+        startActivityIfAuthorized()
     }
+
+    private fun startActivityIfAuthorized() {
+        val token = getToken(this)
+        if (!token.isNullOrEmpty()) {
+            val intent = Intent(this, FeedActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun switchDeterminateBar(isLaunch: Boolean) {
+        if (isLaunch) {
+            determinateBarMain.isVisible = true
+            btn_login.isEnabled = false
+            btn_registration.isEnabled = false
+        } else {
+            determinateBarMain.isVisible = false
+            btn_login.isEnabled = true
+            btn_registration.isEnabled = true
+            determinateBarMain.isVisible = false
+        }
+    }
+
 }

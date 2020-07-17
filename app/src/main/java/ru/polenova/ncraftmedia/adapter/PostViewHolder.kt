@@ -1,4 +1,4 @@
-package ru.polenova.ncraftmedia.Adapter
+package ru.polenova.ncraftmedia.adapter
 
 import android.view.View
 import ru.polenova.ncraftmedia.dto.Post
