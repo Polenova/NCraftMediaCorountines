@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import io.ktor.utils.io.errors.IOException
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import ru.polenova.ncraftmedia.api.Token
@@ -27,24 +28,33 @@ class MainActivity : AppCompatActivity() {
             } else {
                 lifecycleScope.launch {
                     switchDeterminateBar(true)
-                    val response = Repository.authenticate(login, password)
-                    if (response.isSuccessful) {
-                        val token: Token? = response.body()
-                        savedToken(token, this@MainActivity)
-                        Toast.makeText(
-                            this@MainActivity,
-                            R.string.authorization_completed,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        startActivityIfAuthorized()
-                    } else {
+                    try {
+                        val response = Repository.authenticate(login, password)
+                        if (response.isSuccessful) {
+                            val token: Token? = response.body()
+                            savedToken(token, this@MainActivity)
+                            Toast.makeText(
+                                this@MainActivity,
+                                R.string.authorization_completed,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            startActivityIfAuthorized()
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                R.string.authorization_failed,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } catch (e: IOException) {
                         Toast.makeText(
                             this@MainActivity,
                             R.string.authorization_failed,
                             Toast.LENGTH_SHORT
                         ).show()
+                    } finally {
+                        switchDeterminateBar(false)
                     }
-                    switchDeterminateBar(false)
                 }
             }
         }

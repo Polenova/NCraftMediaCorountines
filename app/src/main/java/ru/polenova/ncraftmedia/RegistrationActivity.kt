@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import io.ktor.utils.io.errors.IOException
 import kotlinx.android.synthetic.main.activity_registration.*
 import kotlinx.coroutines.launch
 import ru.polenova.ncraftmedia.api.Token
@@ -26,21 +27,31 @@ class RegistrationActivity : AppCompatActivity() {
             } else {
                 lifecycleScope.launch {
                     switchDeterminateBar(true)
-                    val response = Repository.register(login, password1)
-                    if (response.isSuccessful) {
-                        val token: Token? = response.body()
-                        savedToken(token, this@RegistrationActivity)
-                        Toast.makeText(this@RegistrationActivity,
-                            R.string.registration_completed,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
-                    } else {
+                    try {
+                        val response = Repository.register(login, password1)
+                        if (response.isSuccessful) {
+                            val token: Token? = response.body()
+                            savedToken(token, this@RegistrationActivity)
+                            Toast.makeText(this@RegistrationActivity,
+                                R.string.registration_completed,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        } else {
+                            Toast.makeText(
+                                this@RegistrationActivity,
+                                R.string.registration_failed,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } catch (e: IOException) {
                         Toast.makeText(
                             this@RegistrationActivity,
                             R.string.registration_failed,
                             Toast.LENGTH_SHORT
                         ).show()
+                    } finally {
+                        switchDeterminateBar(false)
                     }
                 }
             }
