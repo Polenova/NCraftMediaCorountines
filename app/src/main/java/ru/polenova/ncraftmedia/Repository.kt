@@ -10,7 +10,7 @@ object Repository {
     // Ленивое создание Retrofit экземпляра
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("https://hw7ktor.herokuapp.com/")
+            .baseUrl("https://ktor-crud-auth.herokuapp.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
