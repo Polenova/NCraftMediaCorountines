@@ -1,91 +1,92 @@
 package ru.polenova.ncraftmedia.adapter
 
-import android.content.Intent
-import android.net.Uri
+import android.app.AlertDialog
+import android.content.Context
 import android.view.View
-import android.view.View.*
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.post_card.view.*
-import kotlinx.android.synthetic.main.post_card.view.imageViewCom
-import kotlinx.android.synthetic.main.post_card.view.imageViewComment
 import kotlinx.android.synthetic.main.post_card.view.imageViewLike
-import kotlinx.android.synthetic.main.post_card.view.imageViewShare
-import kotlinx.android.synthetic.main.post_card.view.textViewComment
 import kotlinx.android.synthetic.main.post_card.view.textViewLike
 import kotlinx.android.synthetic.main.post_card.view.textViewName
 import ru.polenova.ncraftmedia.R
-import ru.polenova.ncraftmedia.dto.Post
+import ru.polenova.ncraftmedia.dto.PostModel
 
-open class BaseViewHolder(val adapter: PostAdapter, view: View, var list: MutableList<Post>) :
-    RecyclerView.ViewHolder(view) {
+open class BaseViewHolder(private val adapter: PostAdapter, val view: View, var list: MutableList<PostModel>
+) : RecyclerView.ViewHolder(view) {
 
     init {
-        this.clickViews()
+        this.clickButtonListener()
     }
 
-    open fun clickViews() {
-        with(itemView) {
+    open fun bind(post: PostModel) {
+        with(view) {
+            textViewDate.text = post.dateOfPost
+            textViewPost.text = post.textOfPost
+            textViewName.text = post.nameAuthor
+            textViewLike.text = post.likesCount.toString()
+            textViewRepost.text = post.repostsCount.toString()
+            fillCount(textViewLike, post.likesCount)
+            fillCount(textViewRepost, post.repostsCount)
+            when {
+                post.likeActionPerforming -> {
+                    imageViewLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                }
+                post.isLikedByUser -> {
+                    imageViewLike.setImageResource(R.drawable.ic_favorite_red_24dp)
+                }
+                else -> {
+                    imageViewLike.setImageResource(R.drawable.ic_favorite_grey_24dp)
+                }
+            }
+        }
+    }
+
+    private fun clickButtonListener() {
+        with(view) {
             imageViewLike.setOnClickListener {
+                it as ImageButton
+                val currentPosition = adapterPosition
                 if (adapterPosition != RecyclerView.NO_POSITION) {
-                    val item = adapter.list[adapterPosition]
-                    item.likeByMe = !item.likeByMe
-                    if (item.likeByMe) {
-                        ++item.countLiked
+                    val item = list[currentPosition]
+                    if (item.likeActionPerforming) {
+                        Toast.makeText(
+                            context,
+                            R.string.like_is_performing,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
-                        --item.countLiked
+                        adapter.likeBtnClickListener?.onLikeBtnClicked(item, currentPosition)
                     }
-                    adapter.notifyItemChanged(adapterPosition)
                 }
             }
-            imageViewShare.setOnClickListener {
+            imageViewRepost.setOnClickListener {
+                it as ImageButton
+                val currentPosition = adapterPosition
                 if (adapterPosition != RecyclerView.NO_POSITION) {
-                    val item = adapter.list[adapterPosition]
-                    val intent = Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(
-                            Intent.EXTRA_TEXT, """
-                                ${item.author} (${item.created})
-    
-                                ${item.content}
-                            """.trimIndent()
-                        )
-                        type = "text/plain"
+                    val item = list[currentPosition]
+                    if (item.isRepostedByUser) {
+                        Toast.makeText(
+                            context,
+                            R.string.cannot_repost_2_time,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        showDialog(context) {content ->
+                            adapter.repostBtnClickListener?.onRepostBtnClicked(
+                                item,
+                                currentPosition, content
+                            )
+                        }
                     }
-                    itemView.context.startActivity(intent)
-                    ++item.countShare
-                }
-                adapter.notifyDataSetChanged()
-            }
-            imageViewComment.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    val item = adapter.list[adapterPosition]
-                    ++item.countComment
-                }
-                adapter.notifyItemChanged(adapterPosition)
-            }
-            imageViewLocation.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    val item = adapter.list[adapterPosition]
-                    val lat = item.location!!.first
-                    val lng = item.location.second
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("geo:$lat,$lng")
-                    }
-                    itemView.context.startActivity(intent)
                 }
             }
-            imageViewCom.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    val item = adapter.list[adapterPosition]
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse(item.sourceHTTP)
-                    }
-                    itemView.context.startActivity(intent)
-                }
-            }
+
             imageRemove.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
-                    val item = adapter.list[adapterPosition]
                     list.removeAt(adapterPosition)
                     adapter.notifyDataSetChanged()
                 }
@@ -93,33 +94,24 @@ open class BaseViewHolder(val adapter: PostAdapter, view: View, var list: Mutabl
         }
     }
 
-    open fun bind(post: Post) {
-        with(itemView) {
-            textViewName.text = post.author
-            textViewPost.text = post.content
-            textViewDate.text = post.created
-            if (post.location == null) imageViewLocation.visibility =
-                INVISIBLE else imageViewLocation.visibility = VISIBLE
-            if (post.sourceHTTP != null) {
-                imageViewCom.visibility = VISIBLE
-                imageViewCom.isClickable = true
-            }
-            if (post.countLiked == 0) {
-                imageViewLike.setImageResource(R.drawable.ic_favorite_grey_24dp)
-                textViewLike.visibility = INVISIBLE
-            } else {
-                imageViewLike.setImageResource(R.drawable.ic_favorite_red_24dp)
-                textViewLike.visibility = VISIBLE
-                textViewLike.text = "${post.countLiked}"
-            }
-            if (post.countComment != 0) {
-                imageViewComment.setImageResource(R.drawable.ic_mode_comment_black_24dp)
-                textViewComment.text = "${post.countComment}"
-            }
-            if (post.countShare != 0) {
-                imageViewShare.setImageResource(R.drawable.ic_share_black_24dp)
-                textViewShare.text = "${post.countShare}"
-            }
-        }
+}
+
+fun showDialog(context: Context, createBtnClicked: (content: String) -> Unit) {
+    val dialog = AlertDialog.Builder(context)
+        .setView(R.layout.activity_create_post)
+        .show()
+    dialog.createButton.setOnClickListener {
+        createBtnClicked(dialog.enterContentEditText.text.toString())
+        dialog.dismiss()
     }
 }
+
+fun fillCount(view: TextView, count: Int) {
+    if (count == 0) {
+        view.isEnabled = false
+    } else {
+        view.isEnabled = true
+        view.text = count.toString()
+    }
+}
+

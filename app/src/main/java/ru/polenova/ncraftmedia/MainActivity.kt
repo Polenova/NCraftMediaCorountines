@@ -10,7 +10,6 @@ import io.ktor.utils.io.errors.IOException
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import ru.polenova.ncraftmedia.api.Token
-import ru.polenova.ncraftmedia.FeedActivity as FeedActivity
 
 class MainActivity : AppCompatActivity() {
 
