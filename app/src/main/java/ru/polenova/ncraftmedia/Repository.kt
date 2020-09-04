@@ -19,7 +19,7 @@ object Repository {
 
     private var retrofit: Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://ktor-crud-auth.herokuapp.com/")
+            .baseUrl("https://ktor-crud-auth.herokuapp.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -27,7 +27,7 @@ object Repository {
 
     suspend fun authenticate(login: String, password: String) = api.authenticate(AuthRequestParams(login, password))
 
-    suspend fun register(login: String, password: String) = api.register(RegistrationRequestParams(login, password))
+    suspend fun register(login: String, password: String) = api.register(AuthRequestParams(login, password))
 
     suspend fun createPost(content: String): Response<Void> {
         val postRequestDto = PostRequestDto(
@@ -66,7 +66,7 @@ object Repository {
             .build()
         retrofit = Retrofit.Builder()
             .client(client)
-            .baseUrl("https://server-autorization.herokuapp.com")
+            .baseUrl("https://ktor-crud-auth.herokuapp.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
