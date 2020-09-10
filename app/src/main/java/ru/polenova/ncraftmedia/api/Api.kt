@@ -1,5 +1,6 @@
 package ru.polenova.ncraftmedia.api
 
+import okhttp3.MultipartBody
 import retrofit2.http.*
 import retrofit2.Response
 import ru.polenova.ncraftmedia.dto.PostModel
@@ -38,4 +39,10 @@ interface API {
 
     @GET("api/v1/posts/{id}/get-posts-before")
     suspend fun getPostsBefore(@Path("id") id: Long): Response<List<PostModel>>
+
+    @Multipart
+    @POST("api/v1/media")
+    suspend fun uploadImage(@Part file: MultipartBody.Part):
+            Response<AttachmentModel>
 }
+

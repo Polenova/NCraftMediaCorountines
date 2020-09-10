@@ -7,6 +7,8 @@ import androidx.core.content.edit
 import ru.polenova.ncraftmedia.api.Token
 
 private const val TOKEN_KEY = "TOKEN_KEY"
+private const val ATTACH_MODEL_KEY = "ATTACH_MODEL_KEY"
+private const val FIRST_TIME_SHARED_KEY = "first_time_shared_key"
 private const val SHARED_PREF_KEY = "SHARED_PREF"
 
 fun savedToken(token: Token?, context: Context) {
@@ -51,3 +53,37 @@ fun isAuthorized(context: Context) {
         activity.finish()
     }
 }
+
+fun savedAttachModel(attachModelId: String?, context: Context) {
+    val sharedPref = context.getSharedPreferences(
+        SHARED_PREF_KEY,
+        Context.MODE_PRIVATE
+    )
+    sharedPref.edit {
+        putString(
+            ATTACH_MODEL_KEY,
+            attachModelId
+        )
+    }
+}
+
+fun getAttachModel(context: Context): String? {
+    val sharedPref = context.getSharedPreferences(
+        SHARED_PREF_KEY,
+        Context.MODE_PRIVATE
+    )
+    return sharedPref.getString(
+        ATTACH_MODEL_KEY,
+        null
+    )
+}
+
+fun isFirstTime(context: Context) =
+    context.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE).getBoolean(
+        FIRST_TIME_SHARED_KEY, true
+    )
+
+fun setNotFirstTime(context: Context) =
+    context.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE)
+        .edit()
+        .putBoolean(SHARED_PREF_KEY, false)

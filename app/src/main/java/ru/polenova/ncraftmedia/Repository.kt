@@ -1,25 +1,29 @@
 package ru.polenova.ncraftmedia
 
+import android.graphics.Bitmap
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.polenova.ncraftmedia.Repository.authenticate
 import ru.polenova.ncraftmedia.Repository.register
-import ru.polenova.ncraftmedia.api.API
-import ru.polenova.ncraftmedia.api.AuthRequestParams
-import ru.polenova.ncraftmedia.api.InjectAuthTokenInterceptor
-import ru.polenova.ncraftmedia.api.RegistrationRequestParams
+import ru.polenova.ncraftmedia.api.*
 import ru.polenova.ncraftmedia.dto.PostModel
 import ru.polenova.ncraftmedia.dto.PostRequestDto
 import ru.polenova.ncraftmedia.dto.PostType
+import java.io.ByteArrayOutputStream
+
+const val BASE_URL = "https://ktor-crud-auth.herokuapp.com"
 
 object Repository {
 
     private var retrofit: Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://ktor-crud-auth.herokuapp.com")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -29,12 +33,23 @@ object Repository {
 
     suspend fun register(login: String, password: String) = api.register(AuthRequestParams(login, password))
 
-    suspend fun createPost(content: String): Response<Void> {
+    suspend fun createPost(content: String, attachmentModelId: String? = null): Response<Void> {
         val postRequestDto = PostRequestDto(
             textOfPost = content,
-            postType = PostType.POST
+            postType = PostType.POST,
+            attachmentId = attachmentModelId
         )
         return api.createPost(postRequestDto)
+    }
+
+    suspend fun upload(bitmap: Bitmap): Response<AttachmentModel> {
+        val bos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos)
+        val reqFIle =
+            RequestBody.create("image/jpeg".toMediaTypeOrNull(), bos.toByteArray())
+        val body =
+            MultipartBody.Part.createFormData("file", "image.jpg", reqFIle)
+        return api.uploadImage(body)
     }
 
     suspend fun getPosts() = api.getPosts()
@@ -66,7 +81,7 @@ object Repository {
             .build()
         retrofit = Retrofit.Builder()
             .client(client)
-            .baseUrl("https://ktor-crud-auth.herokuapp.com")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

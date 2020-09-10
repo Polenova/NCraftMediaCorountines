@@ -229,4 +229,12 @@ class FeedActivity : AppCompatActivity(), PostAdapter.OnLikeBtnClickListener,
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isFirstTime(this)) {
+            NotificationHelper.sayGoodbye(this)
+            setNotFirstTime(this)
+        }
+    }
+
 }
