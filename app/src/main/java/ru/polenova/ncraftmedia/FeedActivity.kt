@@ -42,7 +42,7 @@ class FeedActivity : AppCompatActivity(), PostAdapter.OnLikeBtnClickListener,
                 switchDeterminateBar(true)
                 val result = Repository.getRecent()
                 if (result.isSuccessful) {
-                    with(content) {
+                    with(container) {
                         layoutManager = LinearLayoutManager(this@FeedActivity)
                         adapter = PostAdapter(
                             (result.body() ?: emptyList()) as MutableList<PostModel>
@@ -80,7 +80,7 @@ class FeedActivity : AppCompatActivity(), PostAdapter.OnLikeBtnClickListener,
                 val newData = Repository.getRecent()
                 swipeContainer.isRefreshing = false
                 if (newData.isSuccessful) {
-                    with(content) {
+                    with(container) {
                         try {
                             val oldList = (adapter as PostAdapter).list
                             val newList = newData.body()!! as MutableList<PostModel>
@@ -115,7 +115,7 @@ class FeedActivity : AppCompatActivity(), PostAdapter.OnLikeBtnClickListener,
                         switchDeterminateBar(true)
                         val result = Repository.getRecent()
                         if (result.isSuccessful) {
-                            with(content) {
+                            with(container) {
                                 val oldList = (adapter as PostAdapter).list
                                 val newList = result.body()!! as MutableList<PostModel>
                                 val postDiffUtilCallback = PostDiffUtilCallback(oldList, newList)
@@ -149,7 +149,7 @@ class FeedActivity : AppCompatActivity(), PostAdapter.OnLikeBtnClickListener,
             switchDeterminateBar(true)
             try {
                 item.likeActionPerforming = true
-                with(content) {
+                with(container) {
                     adapter?.notifyItemChanged(position)
                     val response = if (item.isLikedByUser) {
                         Repository.dislikedByUser(item.id)
@@ -178,7 +178,7 @@ class FeedActivity : AppCompatActivity(), PostAdapter.OnLikeBtnClickListener,
         lifecycleScope.launch {
             switchDeterminateBar(true)
             try {
-                with(content) {
+                with(container) {
                     adapter?.notifyItemChanged(position)
                     if (item.isRepostedByUser) {
                         Toast.makeText(

@@ -1,14 +1,16 @@
 package ru.polenova.ncraftmedia.adapter
 
+import android.annotation.SuppressLint
 import android.view.View
 import kotlinx.android.synthetic.main.post_card.view.*
 import ru.polenova.ncraftmedia.dto.PostModel
 
-class RepostViewHolder (adapter: PostAdapter, view: View,  list: MutableList<PostModel>) :  BaseViewHolder (adapter, view, list) {
+class RepostViewHolder (adapter: PostAdapter, view: View,  list: MutableList<PostModel>) :  PostViewHolder (adapter, view, list) {
 
+    @SuppressLint("SetTextI18n")
     override fun bind(post: PostModel) {
         super.bind(post)
-        with(itemView) {
+        with(view) {
             textViewPost.text = "${post.textOfPost} \n repost: '${post.nameAuthor}'"
             textViewAnother.visibility = View.VISIBLE
             textViewAnother.text = "Repost of: ${post.nameAuthor}"

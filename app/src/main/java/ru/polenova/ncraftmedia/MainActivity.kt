@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
     private fun startActivityIfAuthorized() {
         val token = getToken(this)
         if (!token.isNullOrEmpty()) {
+            Repository.createRetrofitWithAuth(token)
             val intent = Intent(this, FeedActivity::class.java)
             startActivity(intent)
             finish()

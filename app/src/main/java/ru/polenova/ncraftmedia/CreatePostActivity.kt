@@ -10,12 +10,12 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.activity_create_post.*
+import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.coroutines.launch
 import ru.polenova.ncraftmedia.api.AttachmentModel
 import java.io.IOException
 
 const val REQUEST_IMAGE_CAPTURE = 1
-private var attachmentModel: AttachmentModel? = null
 
 class CreatePostActivity : AppCompatActivity() {
 
@@ -44,7 +44,7 @@ class CreatePostActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                             setResult(Activity.RESULT_OK)
-                            startActivityForResult(intent, 1)
+                            //startActivityForResult(intent, 1)
                             finish()
                         } else {
                             Toast.makeText(

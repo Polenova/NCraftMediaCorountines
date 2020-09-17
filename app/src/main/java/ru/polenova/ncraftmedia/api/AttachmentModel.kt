@@ -8,5 +8,5 @@ class AttachmentModel(val id: String, val mediaType: AttachmentType) {
 }
 
 enum class AttachmentType {
-    IMAGE, VIDEO
+    IMAGE
 }

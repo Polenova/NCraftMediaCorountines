@@ -42,9 +42,7 @@ class PostAdapter(var list: MutableList<PostModel>) :
             .from(parent.context)
             .inflate(R.layout.post_card, parent, false)
         return when (viewType) {
-            TYPE_ITEM_COMM -> CommercialViewHolder(this, view, list)
             TYPE_ITEM_REPOST -> RepostViewHolder(this, view, list)
-            TYPE_ITEM_VIDEO -> VideoViewHolder(this, view, list)
             TYPE_ITEM_AD -> AdViewHolder(this, view, list)
             ITEM_FOOTER -> FooterViewHolder(
                 this,
@@ -65,9 +63,7 @@ class PostAdapter(var list: MutableList<PostModel>) :
                 if (list.isNotEmpty()) {
                     val post = list[position]
                     when (post.postType) {
-                        PostType.COMMERCIAL -> TYPE_ITEM_COMM
                         PostType.REPOST -> TYPE_ITEM_REPOST
-                        PostType.VIDEO -> TYPE_ITEM_VIDEO
                         PostType.AD_POST -> TYPE_ITEM_AD
                         else -> TYPE_ITEM_POST
                     }
@@ -81,26 +77,12 @@ class PostAdapter(var list: MutableList<PostModel>) :
         if (position != list.size) {
             val post = list[position]
             when (post.postType) {
-                PostType.REPLY -> {
-                    with(holder as ReplyViewHolder) {
-                        bind(post)
-                    }
-                }
                 PostType.REPOST -> {
                     with(holder as RepostViewHolder) {
                         bind(post)
                     }
                 }
-                PostType.VIDEO -> {
-                    with(holder as VideoViewHolder) {
-                        bind(post)
-                    }
-                }
-                PostType.COMMERCIAL -> {
-                    with(holder as CommercialViewHolder) {
-                        bind(post)
-                    }
-                }
+
                 PostType.AD_POST -> {
                     with(holder as AdViewHolder) {
                         bind(post)
@@ -113,7 +95,6 @@ class PostAdapter(var list: MutableList<PostModel>) :
                 }
             }
         }
-
     }
 }
 
