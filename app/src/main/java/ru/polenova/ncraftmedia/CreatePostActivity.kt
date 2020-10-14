@@ -15,9 +15,12 @@ import kotlinx.coroutines.launch
 import ru.polenova.ncraftmedia.api.AttachmentModel
 import java.io.IOException
 
-const val REQUEST_IMAGE_CAPTURE = 1
 
 class CreatePostActivity : AppCompatActivity() {
+
+    companion object {
+        const val REQUEST_IMAGE_CAPTURE = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

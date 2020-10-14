@@ -17,7 +17,7 @@ import ru.polenova.ncraftmedia.dto.PostRequestDto
 import ru.polenova.ncraftmedia.dto.PostType
 import java.io.ByteArrayOutputStream
 
-const val BASE_URL = "https://ktor-crud-auth.herokuapp.com"
+const val BASE_URL = "https://ncraftmedia-polenova.herokuapp.com/"
 
 object Repository {
 
@@ -51,6 +51,9 @@ object Repository {
             MultipartBody.Part.createFormData("file", "image.jpg", reqFIle)
         return api.uploadImage(body)
     }
+
+    suspend fun firebasePushToken(token: Token): Response<Void> = api.firebasePushToken(token)
+
 
     suspend fun getPosts() = api.getPosts()
 
